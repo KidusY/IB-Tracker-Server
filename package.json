@@ -1,5 +1,5 @@
 {
-  "name": "thingful-server",
+  "name": "IB_tracker_server",
   "version": "0.0.1",
   "description": "Starter code for learning about authentication.",
   "private": true,
@@ -31,9 +31,6 @@
     "postgrator-cli": "^3.2.0",
     "supertest": "^3.3.0"
   },
-  "contributors": [
-    "Thomas `tomatao` Hudspith-Tatham <iammotivated@gmail.com>",
-    "Joshua Reade Harris <jharris@thinkful.com>"
-  ],
+
   "license": "MIT"
 }
