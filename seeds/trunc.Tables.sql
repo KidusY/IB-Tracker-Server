@@ -1,2 +1,4 @@
 TRUNCATE
-  
+  inventory
+  users
+  product
