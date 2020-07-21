@@ -5,31 +5,56 @@ const inventoryRouter = express.Router();
 inventoryRouter
 	.route('/')
 	.get((req, res, next) => {
-		inventoryService.getAllInventory(req.app.get('db'))
+		inventoryService
+			.getAllInventory(req.app.get('db'))
 			.then((inventory) => {
 				res.json(inventoryService.serializeThings(inventory));
 			})
 			.catch(next);
 	})
 	.post((req, res, next) => {
-    const inventory = req.body;   
-		inventoryService.addInventory(req.app.get('db'), inventory).then((inventory) => res.json(inventory));
-  })
-  
-  
+		const newinventory = req.body;
+		inventoryService
+			.getInventoryByProductId(req.app.get('db'), newinventory.productid)
+			.then((inventory) => {
+				//if inventory already exists then update the existing one
+				if (inventory) {
+					if (inventory.productid == newinventory.productid) {
+						inventory.quantity = Number(inventory.quantity) + Number(newinventory.quantity);
+						console.log(inventory.quantity);
+						inventoryService
+							.updateInventoryByProductId(req.app.get('db'), inventory.productid, inventory)
+							.then((inventory) => res.json('Updated'))
+							.catch((err) => console.log(err));
+					}
+				} else {
+					//create a new inventory if the inventory does not exists
+					inventoryService
+						.addInventory(req.app.get('db'), newinventory)
+						.then((inventory) => res.json(inventory))
+						.catch((err) => console.log(err));
+				}
+			})
+			.catch(next);
+	});
 
-inventoryRouter.route('/:inventory_id')
-.all(checkThingExists)
-.get((req, res) => {
-	res.json(inventoryService.serializeThing(res.inventory));
-})
-.put((req, res, next) => {
-  const inventoryInfo = req.body;
-  inventoryService.updateInventory(req.app.get('db'),res.inventory.inventoryid,inventoryInfo).then(inventory=>res.send("Inventory has been updated"))
-})
-.delete((req, res, next) => {
-  inventoryService.deleteInventory(req.app.get('db'),res.inventory.inventoryid).then(inventory=>res.send("Inventory deleted"))
-})
+inventoryRouter
+	.route('/:inventory_id')
+	.all(checkThingExists)
+	.get((req, res) => {
+		res.json(inventoryService.serializeThing(res.inventory));
+	})
+	.put((req, res, next) => {
+		const inventoryInfo = req.body;
+		inventoryService
+			.updateInventory(req.app.get('db'), res.inventory.inventoryid, inventoryInfo)
+			.then((inventory) => res.send('Inventory has been updated'));
+	})
+	.delete((req, res, next) => {
+		inventoryService
+			.deleteInventory(req.app.get('db'), res.inventory.inventoryid)
+			.then((inventory) => res.send('Inventory deleted'));
+	});
 
 /* async/await syntax for promises */
 async function checkThingExists(req, res, next) {

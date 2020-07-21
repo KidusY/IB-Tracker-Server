@@ -9,8 +9,10 @@ const inventoryService = {
 	getByInventoryId(db, id) {
 		return inventoryService.getAllInventory(db).where('inventoryid', id).first();
 	},
-
-	addInventory(db, inventory) {
+	getInventoryByProductId(db, id) {
+		return inventoryService.getAllInventory(db).where('productid', id).first();
+	},
+	addInventory(db, inventory) {		
 		return db
 			.insert(inventory)
 			.into('inventory')
@@ -19,12 +21,15 @@ const inventoryService = {
 			.then((inventory) => inventoryService.getByInventoryId(db, inventory.inventoryid));
 	},
 
-	deleteInventory(db, inventoryId) {		
+	deleteInventory(db, inventoryId) {
 		return inventoryService.getAllInventory(db).where('inventoryid', inventoryId).del();
 	},
 
-	updateInventory(db,inventoryId,inventoryInfo){
-		return inventoryService.getAllInventory(db).where('inventoryid', inventoryId).update(inventoryInfo)
+	updateInventory(db, inventoryId, inventoryInfo) {
+		return inventoryService.getAllInventory(db).where('inventoryid', inventoryId).update(inventoryInfo);
+	},
+	updateInventoryByProductId(db, productId, inventoryInfo) {
+		return inventoryService.getAllInventory(db).where('productid', productId).update(inventoryInfo);
 	},
 
 	serializeThings(things) {
@@ -40,14 +45,14 @@ const inventoryService = {
 		const thingData = thingTree.grow([ thing ]).getData()[0];
 
 		return {
-			inventoryid :thingData.inventoryid,
-			productid: thingData.productid,		
+			inventoryid: thingData.inventoryid,
+			productid: thingData.productid,
 			location: thingData.location,
-			quantity:thingData.quantity,
-			userId:thingData.userId,
-			comments:thingData.comments,
+			quantity: thingData.quantity,
+			userid: thingData.userid,
+			comments: xss(thingData.comments),
 			date_created: thingData.date_created,
-			date_modified:thingData.date_modified
+			date_modified: thingData.date_modified
 		};
 	}
 };
