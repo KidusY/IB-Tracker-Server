@@ -1,10 +1,11 @@
 const express = require('express');
 const productService = require('./product-service');
+const {requireAuth} = require('../middleware/jwt');
 const productRouter = express.Router();
 
 productRouter
-	.route('/')
-	.get((req, res, next) => {
+	.route('/')	
+	.get(requireAuth,(req, res, next) => {
 		productService.getAllProduct(req.app.get('db'))
 			.then((product) => {
 				res.json(productService.serializeThings(product));

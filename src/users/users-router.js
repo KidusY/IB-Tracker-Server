@@ -7,6 +7,7 @@ usersRouter
 	.get((req, res, next) => {
 		usersService.getAllUsers(req.app.get('db'))
 			.then((users) => {
+				 console.log(users);
 				res.json(usersService.serializeThings(users));
 			})
 			.catch(next);

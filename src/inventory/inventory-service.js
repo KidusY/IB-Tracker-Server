@@ -12,7 +12,7 @@ const inventoryService = {
 	getInventoryByProductId(db, id) {
 		return inventoryService.getAllInventory(db).where('productid', id).first();
 	},
-	addInventory(db, inventory) {		
+	addInventory(db, inventory) {
 		return db
 			.insert(inventory)
 			.into('inventory')
@@ -47,6 +47,7 @@ const inventoryService = {
 		return {
 			inventoryid: thingData.inventoryid,
 			productid: thingData.productid,
+			title: thingData.title,
 			location: thingData.location,
 			quantity: thingData.quantity,
 			userid: thingData.userid,

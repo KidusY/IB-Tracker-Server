@@ -22,8 +22,8 @@ app.use(helmet());
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-app.use('/api/product', productRouter);
 app.use('/api/users', usersRouter);
+app.use('/api/product', productRouter);
 app.use('/api/login',loginRouter)
 app.use('/api/inventory', inventoryRouter);
 

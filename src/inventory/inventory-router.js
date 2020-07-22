@@ -21,7 +21,7 @@ inventoryRouter
 				if (inventory) {
 					if (inventory.productid == newinventory.productid) {
 						inventory.quantity = Number(inventory.quantity) + Number(newinventory.quantity);
-						console.log(inventory.quantity);
+
 						inventoryService
 							.updateInventoryByProductId(req.app.get('db'), inventory.productid, inventory)
 							.then((inventory) => res.json('Updated'))
@@ -51,9 +51,20 @@ inventoryRouter
 			.then((inventory) => res.send('Inventory has been updated'));
 	})
 	.delete((req, res, next) => {
-		inventoryService
-			.deleteInventory(req.app.get('db'), res.inventory.inventoryid)
-			.then((inventory) => res.send('Inventory deleted'));
+		const { quantity } = req.body;
+		const inventoryInfo = res.inventory;
+
+		if (inventoryInfo.quantity === 0 || inventoryInfo.quantity <= quantity) {
+			inventoryService
+				.deleteInventory(req.app.get('db'), res.inventory.inventoryid)
+				.then(() => res.json('Deleted'));
+		} else {
+			const newQuantity = { quantity: Number(inventoryInfo.quantity) - Number(quantity) };
+
+			inventoryService
+				.updateInventory(req.app.get('db'), res.inventory.inventoryid,  newQuantity )
+				.then(() => res.json('Deleted'));
+		}
 	});
 
 /* async/await syntax for promises */
