@@ -5,7 +5,8 @@ const productRouter = express.Router();
 
 productRouter
 	.route('/')	
-	.get(requireAuth,(req, res, next) => {
+	.all(requireAuth)
+	.get((req, res, next) => {
 		productService.getAllProduct(req.app.get('db'))
 			.then((product) => {
 				res.json(productService.serializeThings(product));

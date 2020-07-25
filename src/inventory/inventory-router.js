@@ -1,9 +1,11 @@
 const express = require('express');
 const inventoryService = require('./inventory-service');
+const {requireAuth} = require('../middleware/jwt');
 const inventoryRouter = express.Router();
 
 inventoryRouter
 	.route('/')
+	.all(requireAuth)
 	.get((req, res, next) => {
 		inventoryService
 			.getAllInventory(req.app.get('db'))
@@ -13,7 +15,7 @@ inventoryRouter
 			.catch(next);
 	})
 	.post((req, res, next) => {
-		const newinventory = req.body;
+		const newinventory = req.body;		
 		inventoryService
 			.getInventoryByProductId(req.app.get('db'), newinventory.productid)
 			.then((inventory) => {
@@ -40,6 +42,7 @@ inventoryRouter
 
 inventoryRouter
 	.route('/:inventory_id')
+	.all(requireAuth)
 	.all(checkThingExists)
 	.get((req, res) => {
 		res.json(inventoryService.serializeThing(res.inventory));
@@ -57,13 +60,13 @@ inventoryRouter
 		if (inventoryInfo.quantity === 0 || inventoryInfo.quantity <= quantity) {
 			inventoryService
 				.deleteInventory(req.app.get('db'), res.inventory.inventoryid)
-				.then(() => res.json('Deleted'));
+				.then(() => res.json('Deleted')).catch(next)
 		} else {
 			const newQuantity = { quantity: Number(inventoryInfo.quantity) - Number(quantity) };
 
 			inventoryService
 				.updateInventory(req.app.get('db'), res.inventory.inventoryid,  newQuantity )
-				.then(() => res.json('Deleted'));
+				.then(() => res.json('Deleted')).catch(next)
 		}
 	});
 

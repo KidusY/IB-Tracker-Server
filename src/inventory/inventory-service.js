@@ -51,6 +51,7 @@ const inventoryService = {
 			location: thingData.location,
 			quantity: thingData.quantity,
 			userid: thingData.userid,
+			user_name:thingData.user_name,
 			comments: xss(thingData.comments),
 			date_created: thingData.date_created,
 			date_modified: thingData.date_modified

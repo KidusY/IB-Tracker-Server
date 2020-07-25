@@ -28,10 +28,12 @@ loginRouter.route('/').post((req, res, next) => {
 					});
                 }                
 				const sub = dbUser.user_name;
-                const payload = { user_id: dbUser.id };               
+                const payload = { user_id: dbUser.id, };               
                 
 				res.status(201).send({
-					authToken: loginService.createJwt(sub, payload)
+                    authToken: loginService.createJwt(sub, payload),
+                    payload,
+                    sub
 				});
 			});
 		})
