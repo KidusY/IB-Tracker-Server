@@ -1,4 +1,5 @@
 const xss = require('xss');
+const bcrypt = require('bcryptjs');
 const Treeize = require('treeize');
 
 const UserServices = {
@@ -8,6 +9,9 @@ const UserServices = {
 
 	getByUserId(db, id) {
 		return UserServices.getAllUsers(db).where('id', id).first();
+	},
+	hasUserWithUserName(db,user_name){
+		return UserServices.getAllUsers(db).where('user_name',user_name).first().then(user=>!!user)
 	},
 
 	addUser(db, user) {
@@ -19,12 +23,12 @@ const UserServices = {
 			.then((user) => UserServices.getByUserId(db, user.id));
 	},
 
-	deleteUser(db, id) {		
+	deleteUser(db, id) {
 		return UserServices.getAllUsers(db).where('id', id).del();
 	},
 
-	updateUser(db,id,userInfo){
-		return UserServices.getAllUsers(db).where('id', id).update(userInfo)
+	updateUser(db, id, userInfo) {
+		return UserServices.getAllUsers(db).where('id', id).update(userInfo);
 	},
 
 	serializeThings(things) {
@@ -40,14 +44,18 @@ const UserServices = {
 		const thingData = thingTree.grow([ thing ]).getData()[0];
 
 		return {
-            id :thing.id,
-            user_name:xss(thing.user_name),
-            full_name:xss(thing.full_name),
-            password:thing.password,
-            nickname:xss(thing.nickname),
-            date_created:thing.date_created,
-            date_modified:thing.date_modified
+			id: thing.id,
+			user_name: xss(thing.user_name),
+			full_name: xss(thing.full_name),
+			profile_images: xss(thing.profile_images),
+			isadmin:thing.isadmin,
+			nickname: xss(thing.nickname),
+			date_created: thing.date_created,
+			date_modified: thing.date_modified
 		};
+	},
+	hashPassword(password) {
+		return bcrypt.hash(password, 12);
 	}
 };
 

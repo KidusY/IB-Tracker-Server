@@ -1,36 +1,59 @@
 const express = require('express');
 const usersService = require('./users-service');
+const { hashPassword } = require('./users-service');
 const usersRouter = express.Router();
 
 usersRouter
 	.route('/')
 	.get((req, res, next) => {
-		usersService.getAllUsers(req.app.get('db'))
+		usersService
+			.getAllUsers(req.app.get('db'))
 			.then((users) => {
-				 console.log(users);
 				res.json(usersService.serializeThings(users));
 			})
 			.catch(next);
 	})
 	.post((req, res, next) => {
-    const user = req.body;   
-		usersService.addUser(req.app.get('db'), user).then((user) => res.json(user));
-  })
-  
-  
+		const user = req.body;
+		for (const field of [ 'full_name', 'user_name', 'password' ])
+			if (!req.body[field])
+				return res.status(400).json({
+					error: `Missing '${field}' in request body`
+				});
+		usersService
+			.hasUserWithUserName(req.app.get('db'), user.user_name)
+			.then((user_name) => {
+				if (user_name) return res.status(400).json({ error: 'User Name Already Taken' });
+				return usersService.hashPassword(user.password).then((hashedPassword) => {
+					const newUser = {
+						user_name: user.user_name,
+						password: hashedPassword,
+						nickname: user.nickname,
+						profilepic: user.profilepic,
+						full_name: user.full_name,
+						isadmin: user.isadmin
+					};
+					return usersService.addUser(req.app.get('db'), newUser).then((user) => res.json(user));
+				});
+			})
+			.catch(next);
+	});
 
-usersRouter.route('/:user_id')
-.all(checkThingExists)
-.get((req, res) => {
-	res.json(usersService.serializeThing(res.user));
-})
-.put((req, res, next) => {
-  const userInfo = req.body;
-  usersService.updateUser(req.app.get('db'),res.user.id,userInfo).then(user=>res.send("user info has been updated"))
-})
-.delete((req, res, next) => {
-  usersService.deleteUser(req.app.get('db'),res.user.id).then(product=>res.send("user deleted"))
-})
+usersRouter
+	.route('/:user_id')
+	.all(checkThingExists)
+	.get((req, res) => {
+		res.json(usersService.serializeThing(res.user));
+	})
+	.put((req, res, next) => {
+		const userInfo = req.body;
+		usersService
+			.updateUser(req.app.get('db'), res.user.id, userInfo)
+			.then((user) => res.send('user info has been updated'));
+	})
+	.delete((req, res, next) => {
+		usersService.deleteUser(req.app.get('db'), res.user.id).then((product) => res.send('user deleted'));
+	});
 
 /* async/await syntax for promises */
 async function checkThingExists(req, res, next) {
