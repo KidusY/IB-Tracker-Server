@@ -7,6 +7,7 @@ const { NODE_ENV } = require('./config');
 const productRouter = require('./product/product-router');
 const usersRouter = require('./users/users-router');
 const loginRouter = require('./login/login-router');
+const logsRouter = require('./logs/logs-router');
 const bodyParser = require('body-parser');
 const inventoryRouter = require('./inventory/inventory-router');
 
@@ -24,8 +25,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use('/api/users', usersRouter);
 app.use('/api/product', productRouter);
-app.use('/api/login',loginRouter)
+app.use('/api/login',loginRouter);
 app.use('/api/inventory', inventoryRouter);
+app.use('/api/logs',logsRouter);
 
 app.use(function errorHandler(error, req, res, next) {
 	let response;
