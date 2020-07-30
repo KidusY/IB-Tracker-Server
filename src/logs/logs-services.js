@@ -27,6 +27,7 @@ const logsServices = {
 	
 
 	serializeThings(things) {
+        console.log(things);
 		return things.map(this.serializeThing);
 	},
 
@@ -42,7 +43,8 @@ const logsServices = {
 			logId: thing.logid,
 			actions: xss(thing.actions),
 			user_name: xss(thing.user_name),
-			productId: thing.productid,
+            productId: thing.productid,
+            price:thing.price,
 			quantity: thing.quantity,
 			date_created: thing.date_created
 		};
