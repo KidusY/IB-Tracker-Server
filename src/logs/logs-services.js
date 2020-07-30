@@ -39,10 +39,10 @@ const logsServices = {
 		const thingData = thingTree.grow([ thing ]).getData()[0];
 
 		return {
-			logId: thing.logId,
+			logId: thing.logid,
 			actions: xss(thing.actions),
 			user_name: xss(thing.user_name),
-			productId: thing.productId,
+			productId: thing.productid,
 			quantity: thing.quantity,
 			date_created: thing.date_created
 		};
