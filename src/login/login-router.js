@@ -35,7 +35,7 @@ loginRouter.route('/').post((req, res, next) => {
                     authToken: loginService.createJwt(sub, payload),
                     payload,
 					sub,
-					userImage : dbUser.profile_image
+					userImage : dbUser.profilepic
 					
 				});
 			});

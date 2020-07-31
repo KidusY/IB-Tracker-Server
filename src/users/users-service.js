@@ -47,7 +47,7 @@ const UserServices = {
 			id: thing.id,
 			user_name: xss(thing.user_name),
 			full_name: xss(thing.full_name),
-			profile_images: xss(thing.profile_images),
+			profilepic: xss(thing.profilepic),
 			isadmin:thing.isadmin,
 			nickname: xss(thing.nickname),
 			date_created: thing.date_created,
