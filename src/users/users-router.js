@@ -1,10 +1,14 @@
 const express = require('express');
 const usersService = require('./users-service');
 const { hashPassword } = require('./users-service');
+const { requireAuth } = require('../middleware/jwt');
+const { isAdmin } = require('../middleware/isAdmin');
+//const isAdmin = require('../middleware/isAdmin');
 const usersRouter = express.Router();
 
 usersRouter
 	.route('/')
+	.all(requireAuth,isAdmin)
 	.get((req, res, next) => {
 		usersService
 			.getAllUsers(req.app.get('db'))

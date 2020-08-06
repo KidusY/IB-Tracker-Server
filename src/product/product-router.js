@@ -7,6 +7,7 @@ productRouter
 	.route('/')	
 	.all(requireAuth)
 	.get((req, res, next) => {
+		
 		productService.getAllProduct(req.app.get('db'))
 			.then((product) => {
 				res.json(productService.serializeThings(product));
