@@ -1,11 +1,12 @@
 const express = require('express');
 const logsService = require('./logs-services');
 const { requireAuth } = require('../middleware/jwt');
+const { isAdmin } = require('../middleware/isAdmin');
 const logsRouter = express.Router();
 
 logsRouter
 	.route('/')
-	.all(requireAuth)
+	.all(requireAuth,isAdmin)
 	.get((req, res, next) => {
 		logsService
 			.getAllLogs(req.app.get('db'))
