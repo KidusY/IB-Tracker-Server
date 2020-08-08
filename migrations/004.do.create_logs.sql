@@ -1,8 +1,9 @@
-create table IF NOT EXISTS logges (
+create table logs (
 logId SERIAL NOT null PRIMARY key,
 actions text,
-userId SERIAL references ib_tracker_users(id),
-ProductId  SERIAL references product(ProductId),
+user_name text,
+ProductId  integer,
 quantity integer,
+price text,
 date_created TIMESTAMPTZ NOT NULL DEFAULT now()
 );

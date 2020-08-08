@@ -1,5 +1,6 @@
-create table IF NOT EXISTS product (
+create table product(
 ProductId SERIAL NOT null PRIMARY key,
+upc text unique,
 title text not null,
 description text,
 type text,
@@ -8,7 +9,6 @@ height text,
 width text,
 price text,
 rating text,
-location text,
-upc text unique,
-date_created TIMESTAMPTZ NOT NULL DEFAULT now()
-);
+date_created TIMESTAMPTZ NOT NULL DEFAULT now(),
+date_modified TIMESTAMPTZ
+)
