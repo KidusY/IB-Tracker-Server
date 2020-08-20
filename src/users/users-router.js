@@ -45,6 +45,7 @@ usersRouter
 
 usersRouter
 	.route('/:user_id')
+	.all(requireAuth,isAdmin)
 	.all(checkThingExists)
 	.get((req, res) => {
 		res.json(usersService.serializeThing(res.user));
