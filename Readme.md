@@ -27,7 +27,6 @@ Run server...
 
 ## Endpoints
 
-### End points 
 
 #### /api/users
     - Gets the user info
