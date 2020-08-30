@@ -31,6 +31,10 @@ const users = [
 		nickname: 'Kid'
 	}
 ];
+const loginUsers={
+	user_name:"admin",
+	password:"admin"
+};
 const inventory = [
 	{
 		productid: 45,
@@ -45,10 +49,9 @@ const inventory = [
 
 function cleanTables(db) {
 	return db.raw(
-		`TRUNCATE
-        product cascade
-        inventory
-        ib_tracker_users        
+
+		`TRUNCATE product restart identity cascade;
+        
         `
 	);
 }
@@ -59,5 +62,6 @@ module.exports = {
 	productData,
     cleanTables,
     inventory,
-	users
+	users,
+	loginUsers
 };

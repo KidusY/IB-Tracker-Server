@@ -4,6 +4,7 @@ const app = require('../src/app');
 
 describe('product Endpoints', function() {
 	let db;
+	let token;
 	const { productData } = helper;
 	before('make knex instance', () => {
 		db = knex({
@@ -12,7 +13,10 @@ describe('product Endpoints', function() {
 		});
 		app.set('db', db);
 	});
-
+	before('login ', () => {
+		 supertest(app).post('/api/login').send({user_name:"admin",password:"admin"}).then(res=>token = res.body.authToken)
+			
+	});
 	after('disconnect from db', () => db.destroy());
 
 	before('cleanup', () => helper.cleanTables(db));
@@ -22,16 +26,16 @@ describe('product Endpoints', function() {
 	describe(`Get /api/product`, () => {
 		beforeEach('insert product', () => helper.seedProductsTables(db, productData));
 
-		it(`Get a product respondes with 200`, () => {
+		it.only(`Get a product respondes with 200`, () => {
 			return supertest(app)
 				.get('/api/product')
 				.set(
 					'Authorization',
-					'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoyLCJpYXQiOjE1OTc4ODczMjYsInN1YiI6ImFkbWluIn0.9W2E_SCT9-nXq7O4uQhwhFiEKa8VZF38NuhEXfd_8ic'
+					`bearer ${token}`
 				)
 				.expect(200, [
 					{
-						productid: 279,
+						productid:1,
 						title: 'Brown eggs',
 						type: 'dairy',
 						description: 'Raw organic brown eggs in a basketsdfsadf',
@@ -54,10 +58,7 @@ describe('product Endpoints', function() {
 				.expect(200, []);
 		});
 		it(`Gets nothing  respondes with 401`, () => {
-			return supertest(app)
-				.get('/api/product')
-				
-				.expect(401);
+			return supertest(app).get('/api/product').expect(401);
 		});
 	});
 });

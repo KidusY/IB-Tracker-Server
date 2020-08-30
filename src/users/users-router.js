@@ -1,6 +1,5 @@
 const express = require('express');
 const usersService = require('./users-service');
-const { hashPassword } = require('./users-service');
 const { requireAuth } = require('../middleware/jwt');
 const { isAdmin } = require('../middleware/isAdmin');
 //const isAdmin = require('../middleware/isAdmin');

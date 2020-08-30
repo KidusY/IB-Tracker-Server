@@ -17,7 +17,7 @@ describe.only('login Endpoints', function() {
 
 describe.only(`Get /api/users`, () => {	
 	beforeEach('insert users', () => seedUsersTables(db, users));
-		it.only(`200`, () => {
+		it(`200`, () => {
 			return supertest(app)
                 .get('/api/users')
                 .send(user)				
