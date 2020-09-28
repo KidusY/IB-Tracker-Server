@@ -81,3 +81,19 @@ Run server...
 ## Users
 ![Image description](https://github.com/KidusY/IB-Tracker-Client/blob/master/screenShots/users.PNG)
 
+
+## Technologies used to build this project 
+    - React.js
+        - React context 
+        - Chart.js
+        - Axios
+    - Node.js
+        - Knex.js
+        - Express.js
+        - Postgrator
+        - Chai
+        - Xss
+        - JWT
+        - Bcryptjs 
+    - PostgreSQL
+
