@@ -1,5 +1,7 @@
 # Ib-Tracker Server
 
+## Summary
+- This is the client side of IB-Tracker. This app helps small business to keep track of their inventory and their transaction. The admin will be abel to track what his/her employee is doing, the amount of product sold, the amount of product discarded and the amount of product ordered for the main vendor. This app also allows the admin to view their budget and calculate how much they can save  based on their earnings.  
 
 ## Description
 
