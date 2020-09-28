@@ -1,11 +1,11 @@
 # Ib-Tracker Server
 
 ## Summary
-- This is the client side of IB-Tracker. This app helps small business to keep track of their inventory and their transaction. The admin will be abel to track what his/her employee is doing, the amount of product sold, the amount of product discarded and the amount of product ordered for the main vendor. This app also allows the admin to view their budget and calculate how much they can save  based on their earnings.  
+- This is the server side of IB-Tracker. This app helps small business to keep track of their inventory and their transaction. The admin will be abel to track what his/her employee is doing, the amount of product sold, the amount of product discarded and the amount of product ordered for the main vendor. This app also allows the admin to view their budget and calculate how much they can save  based on their earnings.  
 
 ## Description
 
-This end point provides information for the IB-tracker client side. The users are able to post(add) products, users, inventory; Get products, users, inventory, logs.
+This end point provides information for the IB-tracker client side. The users are able to post(add) products, users, inventory; get products, users, inventory and logs.
 
 The users make a post request to the /api/login end-point to get the auth token and other user info  
 
